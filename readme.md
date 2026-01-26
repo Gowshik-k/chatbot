@@ -6,7 +6,7 @@
 
 A high-performance, real-time AI-powered chatbot built with modern web technologies. Features Google Gemini AI integration, WebSocket communication, and a responsive React interface.
 
-## ✨ Features
+## Features
 
 - **Real-time AI Conversations** - Powered by Google Gemini AI with intelligent responses
 - **High Performance** - Response caching, optimized rendering, and efficient state management
