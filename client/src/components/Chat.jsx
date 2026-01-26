@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import io from 'socket.io-client';
 
-const socket = io(`http://${window.location.hostname}:3004`);
+const socket = io(import.meta.env.VITE_BACKEND_URL || `http://${window.location.hostname}:3004`);
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
