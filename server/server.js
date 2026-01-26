@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "https://siren-ykf5.onrender.com/",
+    origin: "https://siren-ykf5.onrender.com",
     methods: ["GET", "POST"]
   }
 });
