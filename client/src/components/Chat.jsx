@@ -24,19 +24,20 @@ const Chat = () => {
   const renderMessage = useCallback((msg, index) => (
     <div
       key={index}
-      className={`mb-4 p-4 rounded-lg max-w-xs lg:max-w-md xl:max-w-lg transition-all duration-200 hover:scale-[1.02] ${
-        msg.sender === 'user'
-          ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white ml-auto shadow-lg'
-          : msg.sender === 'system'
-          ? 'bg-gradient-to-r from-red-600 to-red-700 text-white mx-auto shadow-lg'
-          : 'bg-gradient-to-r from-gray-700 to-gray-800 text-white mr-auto shadow-lg'
-      }`}
+      className={`mb-4 flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
     >
-      <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.message}</p>
-      <span className="text-xs opacity-70 block mt-2 flex items-center">
-        <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-        {formatTime(msg.timestamp)}
-      </span>
+      <div className={`max-w-[80%] p-3 shadow-sm ${
+        msg.sender === 'user'
+          ? 'bg-blue-600 text-white rounded-l-lg rounded-tr-lg'
+          : msg.sender === 'system'
+          ? 'bg-gray-100 text-gray-500 text-xs py-1 px-4 rounded-full mx-auto'
+          : 'bg-white border border-gray-200 text-gray-800 rounded-r-lg rounded-tl-lg'
+      }`}>
+        <p className="text-sm leading-snug">{msg.message}</p>
+        <div className={`text-[10px] mt-1 flex items-center ${msg.sender === 'user' ? 'text-blue-100 justify-end' : 'text-gray-400 justify-start'}`}>
+          {formatTime(msg.timestamp)}
+        </div>
+      </div>
     </div>
   ), [formatTime]);
 
@@ -120,19 +121,19 @@ const Chat = () => {
   }, [sendMessage]);
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <div className="flex flex-col flex-1 overflow-hidden">
       {/* Connection Status */}
-      <div className="bg-gray-800 p-3 border-b border-gray-700">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
-            <span className="text-sm text-gray-300">
-              {isConnected ? 'Connected to SIREN AI' : 'Connecting...'}
-            </span>
-          </div>
-          <div className="text-xs text-gray-500">
-            Powered by Gemini AI
-          </div>
+      <div className="bg-white px-6 py-2 border-b border-gray-200 flex items-center justify-between z-10">
+        <div className="flex items-center space-x-2">
+          <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+          <span className="text-[11px] font-bold text-gray-500 uppercase tracking-tight">
+            {isConnected ? 'Server Connected' : 'Server Offline'}
+          </span>
+        </div>
+        <div className="flex items-center text-[10px] text-gray-400 font-medium">
+          <span className="mr-2">GEMINI 1.5 PRO</span>
+          <div className="h-3 w-[1px] bg-gray-200 mx-2"></div>
+          <span>SECURE CHANNEL</span>
         </div>
       </div>
 
@@ -140,18 +141,12 @@ const Chat = () => {
       <div className="flex-1 overflow-y-auto p-4 pb-6">
         <div className="max-w-4xl mx-auto">
           {messages.length === 0 && (
-            <div className="text-center text-gray-400 mt-12">
-              <div className="mb-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center mb-4">
-                  <span className="text-2xl">🤖</span>
-                </div>
+            <div className="flex flex-col items-center justify-center h-full text-center opacity-50">
+              <div className="w-16 h-16 border-2 border-gray-300 rounded-full flex items-center justify-center mb-4">
+                <span className="text-2xl text-gray-400">?</span>
               </div>
-              <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Welcome to SIREN AI
-              </h2>
-              <p className="text-gray-500 max-w-md mx-auto">
-                Start a conversation with our advanced AI assistant. Ask questions, get help, or just chat!
-              </p>
+              <h2 className="text-lg font-bold text-gray-600">Start a Conversation</h2>
+              <p className="text-xs text-gray-400 mt-1">SIREN AI is ready to assist you.</p>
             </div>
           )}
 
@@ -159,14 +154,13 @@ const Chat = () => {
 
           {/* Typing Indicator */}
           {isTyping && (
-            <div className="mb-4 p-4 rounded-lg max-w-xs bg-gradient-to-r from-gray-700 to-gray-800 text-white mr-auto shadow-lg">
-              <div className="flex items-center space-x-2">
+            <div className="mb-4 flex justify-start">
+              <div className="bg-white border border-gray-200 p-3 rounded-r-lg rounded-tl-lg shadow-sm">
                 <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-pulse"></div>
+                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
                 </div>
-                <span className="text-sm text-gray-400">SIREN is typing...</span>
               </div>
             </div>
           )}
@@ -175,45 +169,25 @@ const Chat = () => {
         </div>
       </div>
 
-      {/* Input */}
-      <div className="p-4 bg-gray-800 border-t border-gray-700">
+      <div className="p-4 bg-white border-t border-gray-200">
         <div className="max-w-4xl mx-auto">
-          <form onSubmit={sendMessage} className="flex space-x-3">
-            <div className="flex-1 relative">
-              <textarea
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Type your message... (Press Enter to send, Shift+Enter for new line)"
-                className="w-full p-4 pr-12 rounded-xl bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-none min-h-[50px] max-h-32"
-                rows="1"
-                disabled={false} // Temporarily enable input
-              />
-              {input.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => setInput('')}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
+          <form onSubmit={sendMessage} className="flex space-x-2">
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Send a message..."
+              className="flex-1 px-4 py-2 border border-gray-300 focus:border-blue-500 focus:outline-none text-sm transition-all bg-gray-50"
+            />
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-600 disabled:to-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 flex items-center space-x-2 min-w-[100px] justify-center"
+              className="bg-gray-800 hover:bg-black text-white px-6 py-2 font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              <span>{isTyping ? 'Sending...' : 'Send'}</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
+              {isTyping ? '...' : 'Send'}
             </button>
           </form>
-          <div className="mt-2 text-xs text-gray-500 text-center">
-            Press Enter to send • Shift+Enter for new line
-          </div>
         </div>
       </div>
     </div>
